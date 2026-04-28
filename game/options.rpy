@@ -1,4 +1,4 @@
-﻿## This file contains options that can be changed to customize your game.
+## This file contains options that can be changed to customize your game.
 ##
 ## Lines beginning with two '#' marks are comments, and you shouldn't uncomment
 ## them. Lines beginning with a single '#' mark are commented-out code, and you
@@ -12,7 +12,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("Danse Macabre")
+define config.name = _("Torre de Aethra")
 
 
 ## Determines if the title given above is shown on the main menu screen. Set
@@ -37,7 +37,7 @@ define gui.about = _p("""
 ## distribution. This must be ASCII-only, and must not contain spaces, colons,
 ## or semicolons.
 
-define build.name = "DanseMacabre"
+define build.name = "TorreDeAethra"
 
 
 ## Sounds and music ############################################################
@@ -145,7 +145,7 @@ default preferences.afm_time = 15
 ## This generally should not be changed, and if it is, should always be a
 ## literal string, not an expression.
 
-define config.save_directory = "DanseMacabre-1679251356"
+define config.save_directory = "TorreDeAethra-TCC"
 
 
 ## Icon ########################################################################
@@ -208,4 +208,4 @@ init python:
 ## The username and project name associated with an itch.io project, separated
 ## by a slash.
 
-define build.itch_project = "taiko3615/danse-macabre"
+# define build.itch_project = "caioc/torre-de-aethra"
