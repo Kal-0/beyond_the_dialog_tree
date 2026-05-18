@@ -1,6 +1,170 @@
 # ==============================================================
-# DIÁLOGOS - OUTROS NPCs (MODO PRÉ-DEFINIDO COM GRUPOS)
+# DIÁLOGOS DE ELDRIN - MODO PRÉ-DEFINIDO COM GRUPOS TEMÁTICOS
 # ==============================================================
+
+label falar_eldrin_porta:
+    show eldrin normal at left with dissolve
+    if not met_eldrin:
+        eldrin "Encontrou algo em meio aos restos deste lugar? Ou só veio me observar?"
+        $ met_eldrin = True
+        $ mark_npc_met("eldrin")
+    else:
+        eldrin "Ainda aqui... O que deseja agora?"
+        
+    call call_npc_dialog("eldrin", "falar_eldrin_porta_end")
+    return
+
+label falar_eldrin_porta_end:
+    hide eldrin normal with dissolve
+    jump sala_porta_loop
+
+# ==============================================================
+# TÓPICOS PAIS: ELDRIN
+# ==============================================================
+
+label dialog_eldrin_group_sobre_voce:
+    eldrin "Sou apenas o zelador de um túmulo de memórias. O que mais quer arrancar de mim?"
+    return
+
+label dialog_eldrin_group_sobre_porta:
+    eldrin "A porta selada, uma barreira que protege o mundo daquilo que jaz nas profundezas. É a sua saida daqui, mas para onde ela o levará é um mistério."
+    return
+
+label dialog_eldrin_group_direcionamento:
+    eldrin "Uhhh... (suspira pesadamente) Vejamos se você é digno de caminhar além deste corredor."
+    return
+
+label dialog_eldrin_group_exploracoes:
+    eldrin "Esta torre guarda segredos antigos. O que você acha que descobriu?"
+    return
+
+label dialog_eldrin_group_magia:
+    eldrin "A magia aqui foi torcida e mutilada por ambição. Me diga o que quer saber."
+    return
+
+label dialog_eldrin_group_a_verdade:
+    eldrin "Você caminhou nas sombras. Você viu as correntes que prendem este lugar. O que tem a me dizer?"
+    return
+
+# ==============================================================
+# TÓPICOS ATÔMICOS FILHOS: ELDRIN
+# ==============================================================
+
+label dialog_eldrin_quem_eh:
+    eldrin "Meu nome é Eldrin. Já fui um Mago de Aethra, mas agora sou apenas o guardião dos nossos erros."
+    return
+
+label dialog_eldrin_testando:
+    eldrin "Naturalmente. Se não puder entender as menores engrenagens desta torre, você não seria de uso nenhum."
+    $ eldrin_trust += 1
+    $ asked_if_testing = True
+    return
+
+label dialog_eldrin_confianca:
+    eldrin "Porque a curiosidade impensada é uma doença que destrói mundos. Mas você parece querer entender o peso das coisas, não apenas usá-las."
+    $ eldrin_trust += 1
+    return
+
+label dialog_eldrin_por_que_guarda:
+    eldrin "Porque fui eu que ajudei a forjar os cadeados. A corrupção ainda sussurra para mim. Eu a mantenho contida... ou tento."
+    return
+
+label dialog_eldrin_selada:
+    eldrin "Sim. Um selo que não responde à força bruta, apenas ao entendimento de um propósito maior."
+    return
+
+label dialog_eldrin_magia_antiga:
+    eldrin "Sim, você precisa provar que entende o porquê desta porta estar selada."
+    if eldrin_trust >= 3:
+        eldrin "Se insiste em entender de onde veio nosso orgulho e queda, vá ao {color=#ffd700}Observatório{/color}. Talvez a lua ainda brilhe para você."
+        eldrin "Pegue esta {color=#ffd700}chave{/color}."
+        $ has_key_observatorio = True
+        $ log_event("Player desbloqueou Observatorio via Confiança de Eldrin.")
+    return
+
+label dialog_eldrin_o_que_fazer:
+    eldrin "Não corra em direção ao abismo de olhos fechados. Explore cada sala de minuciosamente, talvez você encontre algo interessante."
+    return
+
+label dialog_eldrin_direcionamento:
+    eldrin "Se você não prestar atenção ao passado, repetirá nossos fracassos. Vá à {color=#ffd700}Biblioteca Arcana{/color} e veja se os velhos livros dali ainda têm sabedoria."
+    eldrin "Tome a {color=#ffd700}chave{/color}. E não me incomode com tolices."
+    $ has_key_biblioteca = True
+    $ log_event("Player obteve chave da Biblioteca.")
+    return
+
+label dialog_eldrin_aonde_ir:
+    eldrin "Você tem acesso à Biblioteca. Procure respostas entre as prateleiras esquecidas e fale com Aurelium."
+    return
+
+label dialog_eldrin_procura_oficina:
+    eldrin "A caveira de Skulla. Cuidado com ela, seu deboche esconde o remorso."
+    return
+
+label dialog_eldrin_perdido:
+    eldrin "A torre é um labirinto, mas também um espelho. As respostas estão nas salas que você abriu."
+    return
+
+label dialog_eldrin_torre_esconde:
+    eldrin "Alquimia. O começo da nossa ruína. Leve a {color=#ffd700}chave{/color} da {color=#ffd700}Oficina{/color}, e veja os restos de nossa arrogância por si mesmo."
+    $ has_key_oficina = True
+    $ log_event("Player desbloqueou Oficina guiado por Aurelium.")
+    return
+
+label dialog_eldrin_procura_observatorio:
+    eldrin "As magias que selaram este lugar vieram do cosmos. Leve a {color=#ffd700}chave{/color} do {color=#ffd700}Observatório{/color}. Pode ser que uma centelha de esperança ainda esteja lá."
+    $ has_key_observatorio = True
+    $ log_event("Player desbloqueou Observatorio guiado por Skulla.")
+    return
+
+label dialog_eldrin_magia_funciona:
+    eldrin "Neste lugar, a intenção se torna realidade. Cuidado com o que deseja empunhando essa varinha."
+    if not asked_magia:
+        $ eldrin_trust += 1
+        $ asked_magia = True
+    return
+
+label dialog_eldrin_encarando:
+    eldrin "Vejo que algo expandiu sua visão. Você agora vê as marcas ocultas. Não enlouqueça tentando ler o que não deve."
+    if not asked_encarando:
+        $ eldrin_trust += 1
+        $ asked_encarando = True
+    return
+
+label dialog_eldrin_provando_verdade:
+    eldrin "Você encontrou o coração do nosso pecado. Os magos tentaram alterar a verdade usando um artefato amaldiçoado."
+    eldrin "O selo que eu criei cortou Aethra do resto do multiverso para que a corrupção não se espalhasse."
+    eldrin "Eu trouxe você de outro mundo porque sua alma não está amarrada às nossas leis. O artefato não tem poder absoluto sobre você."
+    eldrin "Agora me diga... o que aquela frase significa?"
+    
+    menu:
+        "A verdade é imutável, mesmo quando esquecida.":
+            eldrin "Exatamente. Eles tentaram apagar suas falhas mudando a realidade. Mas a verdade sempre permanece."
+            $ eldrin_trust += 3
+        "Significa que a memória é o mais importante.":
+            eldrin "Não. É muito mais profundo. A verdade não precisa ser lembrada para existir."
+
+    eldrin "A porta final pode ser aberta agora. Mas você deve fazer a escolha que não pude fazer para salvar o que restou, ou que fui covarde demais para tentar..."
+    return
+
+label dialog_eldrin_quebrar_selo:
+    $ final_choice_made = True
+    eldrin "*Os olhos de Eldrin se arregalam com um misto de alívio e pavor.* Você vai enfrentar o artefato..."
+    eldrin "Que o multiverso tenha piedade de sua alma, forasteiro. O selo será quebrado."
+    eldrin "Até mais, Viajante. Estarei esperando por você do outro lado, torcendo pelo seu sucesso!"
+    
+    $ final_choice = "break"
+    return
+
+label dialog_eldrin_ir_embora:
+    $ final_choice_made = True
+    eldrin "*Ele fecha os olhos e um longo suspiro escapa de seus lábios.* Então o sacrifício de Aethra será eterno. Nos deixará ao esquecimento."
+    eldrin "É uma escolha sábia... Porém, eu torcia para que você não agisse da mesma forma que eu. O portal para seu mundo original se abrirá, e nunca mais poderá voltar."
+    eldrin "Adeus, Forasteiro. Tudo isso não passará de um sonho bizarro para você."
+
+    $ final_choice = "leave"
+    return
+
 
 # ==============================================================
 # SKULLA - OFICINA ALQUÍMICA
@@ -9,78 +173,56 @@
 label falar_skulla_oficina:
     show skulla at right with dissolve
     if not met_skulla:
-        skulla "Ah, ótimo. Mais um aventureiro. Me diga, costuma resolver enigmas com coragem ou só com perguntas óbvias?"
+        skulla "Ah, ótimo. Um herói perdido que vive em outro mundo. Bem-vindo à minha humilde bancada de decomposição."
         $ met_skulla = True
+        $ mark_npc_met("skulla")
     else:
-        skulla "O que você precisa, humano frágil? Não vê que estou ocupada estando morta?"
+        skulla "Esse caldeirão não se ferve sozinho. O que você quer? Não vê que estou ocupada estando morta?"
         
-label skulla_talk_loop:
-    menu skulla_grupos:
-        "Sobre Você" if should_show_skulla_group("sobre_voce"):
-            jump skulla_grupo_sobre_voce
-        "Conhecimento" if should_show_skulla_group("conhecimento"):
-            jump skulla_grupo_conhecimento
-        "Ingredientes" if should_show_skulla_group("ingredientes"):
-            jump skulla_grupo_ingredientes
-        "Encerrar conversa":
-            hide skulla with dissolve
-            jump sala_oficina_loop
+    call call_npc_dialog("skulla", "falar_skulla_oficina_end")
+    return
 
-    jump skulla_talk_loop
+label falar_skulla_oficina_end:
+    hide skulla with dissolve
+    jump sala_oficina_loop
 
-label skulla_grupo_sobre_voce:
-    menu skulla_sobre_voce:
-        "Quem é você?":
-            $ mark_skulla_topic_seen("quem_eh")
-            skulla "Eu era a Mestra Alquimista desta torre. Agora, sou a principal atração de decoração macabra. Skulla, ao seu indispor."
-            jump skulla_talk_loop
-            
-        "Como você perdeu seu corpo?":
-            $ mark_skulla_topic_seen("como_perdeu")
-            skulla "Uma mistura infeliz de curiosidade e pó de estrelas instável. Meu corpo virou fumaça, mas minha mente brilhante continuou presa neste meu lindo crânio."
-            jump skulla_talk_loop
-            
-        "Preciso de ajuda.":
-            $ mark_skulla_topic_seen("precisava_ajuda")
-            skulla "Eu também precisava, mas veja como a vida é cruel."
-            jump skulla_talk_loop
-        
-        "← Voltar ao menu":
-            jump skulla_talk_loop
+label dialog_skulla_group_sobre_voce:
+    skulla "Óbvio que sim!! Sou Skulla, Mestra Alquimista. Eldrin gosta de dizer que fomos arrogantes. Eu digo que fomos grandiosos e só."
+    return
 
-label skulla_grupo_conhecimento:
-    menu skulla_conhecimento:
-        "Você sabe algo útil?":
-            $ mark_skulla_topic_seen("sabe_util")
-            skulla "Se eu soubesse a senha, já teria ido embora. Mas sei que Eldrin respeita coerência."
-            jump skulla_talk_loop
-            
-        "Essa sala costumava produzir que tipos de maravilhas?":
-            $ mark_skulla_topic_seen("producoes")
-            skulla "Eu mesma faria uma {color=#ffd700}poção{/color} fantástica agora, se toda a luz astral não estivesse trancada naquele maldito {color=#ffd700}Observatório{/color} no andar de cima."
-            if not has_key_observatorio:
-                skulla "Ouvi dizer que Eldrin confiscou a chave do lugar, típico dele, não é?"
-                $ knows_observatorio = True
-                $ log_event("Player aprendeu a existência do Observatório.")
-            jump skulla_talk_loop
-            
-        "Eu bebi a mistura e não explodi." if has_potion:
-            $ mark_skulla_topic_seen("pocao")
-            skulla "Decepcionante, de fato. Mas esses olhos aí estão brilhando. Faça um favor a si mesmo e vá piscar essa mágica em frente às prateleiras e grimórios mofados da biblioteca."
-            jump skulla_talk_loop
-        
-        "← Voltar ao menu":
-            jump skulla_talk_loop
+label dialog_skulla_group_conhecimento:
+    skulla "Alquimia. A arte de mudar o universo de dentro pra fora. Eu poderia te ensinar se você não fosse tão tapado."
+    return
 
-label skulla_grupo_ingredientes:
-    menu skulla_ingredientes:
-        "A água está fria." if cauldron_water and not cauldron_fire:
-            $ mark_skulla_topic_seen("agua_fria")
-            skulla "Que tipo de sopa fria você esta tentando fazer? Sabe ao menos como um caldeirão funciona? Você precisa de FOGO imbecil!"
-            jump skulla_talk_loop
-        
-        "← Voltar ao menu":
-            jump skulla_talk_loop
+label dialog_skulla_group_a_verdade:
+    skulla "A 'verdade'? haha...(Risada seca). Vamos ver o quanto você é inocente."
+    return
+
+label dialog_skulla_quem_eh:
+    skulla "Eu já fui a mente mais brilhante deste buraco. Hoje sou um objeto de decoração rústica."
+    return
+
+label dialog_skulla_como_perdeu:
+    skulla "Uma explosão astral na tentativa de sublimar essências da realidade pura. Foi lindo... por dois segundos."
+    return
+
+label dialog_skulla_sabe_util:
+    skulla "Eldrin e o resto do conselho eram hipócritas. Se você quer sair daqui, pare de ouvi-lo e comece a ver por si mesmo."
+    return
+
+label dialog_skulla_producoes:
+    skulla "A poção de Visão Arcana? Vá até a mesa, use o caldeirão. Se for incompetente demais para saber os ingredientes, estude os livros empoeirados da biblioteca."
+    return
+
+label dialog_skulla_pocao:
+    skulla "Não explodiu? Surpreendente. Vá para a biblioteca e olhe com atenção. Os segredos foram gravdados onde há algo para se esconder."
+    return
+
+label dialog_skulla_sobre_verdade:
+    skulla "A 'Veritas'?! Pfft... A frase secreta é patética. É só uma mentira que Eldrin conta para si mesmo no espelho para justificar nos ter enterrado vivos!"
+    skulla "Se tem coragem, desfaça a magia dele. A torre é uma prisão, não um escudo."
+    return
+
 
 # ==============================================================
 # NEKRONS - OBSERVATÓRIO
@@ -89,86 +231,73 @@ label skulla_grupo_ingredientes:
 label falar_nekrons_obs:
     show nekrons at center with dissolve
     if not met_nekrons:
-        nekrons "Você acordou tarde demais ou cedo demais. Depende do que está procurando."
+        nekrons "Bem-vindo ao topo do mundo esquecido. Vejo que os fios do seu destino não se prendem a Aethra."
         $ met_nekrons = True
+        $ mark_npc_met("nekrons")
     else:
-        nekrons "As sombras me contaram que você voltaria..."
+        nekrons "As centelhas no ar indicaram que você voltaria."
         
-label nekrons_talk_loop:
-    menu nekrons_grupos:
-        "Sobre Você" if should_show_nekrons_group("sobre_voce"):
-            jump nekrons_grupo_sobre_voce
-        "Conhecimento" if should_show_nekrons_group("conhecimento"):
-            jump nekrons_grupo_conhecimento
-        "Magia" if should_show_nekrons_group("magia"):
-            jump nekrons_grupo_magia
-        "Encerrar conversa":
-            hide nekrons with dissolve
-            jump sala_observatorio_loop
+    call call_npc_dialog("nekrons", "falar_nekrons_obs_end")
+    return
 
-    jump nekrons_talk_loop
+label falar_nekrons_obs_end:
+    hide nekrons with dissolve
+    jump sala_observatorio_loop
 
-label nekrons_grupo_sobre_voce:
-    menu nekrons_sobre_voce:
-        "Quem é você?":
-            $ mark_nekrons_topic_seen("quem_eh")
-            nekrons "Eu sou Nekrons. Os magos me chamavam de familiar, mas eu os via como animais de estimação bem treinados."
-            jump nekrons_talk_loop
-            
-        "Você não é apenas um gato, é?":
-            $ mark_nekrons_topic_seen("nao_gato")
-            nekrons "Tenho mais olhos neste mundo do que você tem em sua cabeça, viajante. O formato felino é apenas conveniente para caminhar entre as sombras."
-            jump nekrons_talk_loop
-            
-        "Você sabe como sair?":
-            $ mark_nekrons_topic_seen("como_sair")
-            nekrons "Talvez. Mas portas raramente se abrem para quem apenas quer escapar."
-            jump nekrons_talk_loop
-        
-        "← Voltar ao menu":
-            jump nekrons_talk_loop
+label dialog_nekrons_group_sobre_voce:
+    nekrons "Um gato? Talvez. Um reflexo cósmico? Certamente."
+    return
 
-label nekrons_grupo_conhecimento:
-    menu nekrons_conhecimento:
-        "O que é este lugar?":
-            $ mark_nekrons_topic_seen("o_que_lugar")
-            nekrons "Um lugar onde o passado aprendeu a se esconder."
-            jump nekrons_talk_loop
-            
-        "Você conhece Eldrin?":
-            $ mark_nekrons_topic_seen("conhece_eldrin")
-            nekrons "Conheço sua culpa. Conhecer alguém de verdade é diferente."
-            jump nekrons_talk_loop
-            
-        "O que posso fazer aqui?" if not has_wand:
-            $ mark_nekrons_topic_seen("o_que_fazer")
-            nekrons "Você olha demais para as estrelas. O poder que sobrou sempre fica renegado às sombras e à poeira, como no alto daquela estante empoeirada."
-            jump nekrons_talk_loop
-        
-        "← Voltar ao menu":
-            jump nekrons_talk_loop
+label dialog_nekrons_group_conhecimento:
+    nekrons "O que deseja descobrir através da lente do cosmos?"
+    return
 
-label nekrons_grupo_magia:
-    menu nekrons_magia:
-        "A varinha que encontrei parece morta." if has_wand and not wand_active:
-            $ mark_nekrons_topic_seen("varinha")
-            nekrons "Morta? Assim como as memórias desta torre. Mas as estrelas... elas ainda têm voz."
-            "A gata preta salta graciosamente até o bocal do grande telescópio, direcionando-o para uma fresta no teto."
-            "A luz mágica do céu estrelado converge pela lente e foca diretamente na ponta de cristal da sua varinha."
-            nekrons "Lumos."
-            with vpunch
-            "A varinha treme e se acende com uma luz inebriante!"
-            $ wand_active = True
-            $ log_event("Nekrons despertou a Varinha canalizando a luz de constelações arcanas.")
-            jump nekrons_talk_loop
-            
-        "Você sentiu esse tremor?" if secret_passage_open:
-            $ mark_nekrons_topic_seen("tremor")
-            nekrons "O cheiro de sangue ancestral subiu pelas escadas da biblioteca. Você abriu velhas feridas nas pedras acreditando que estava apenas cavando tesouros."
-            jump nekrons_talk_loop
-        
-        "← Voltar ao menu":
-            jump nekrons_talk_loop
+label dialog_nekrons_group_magia:
+    nekrons "A magia pura reage à vontade. Use-a apenas quando as palavras não bastarem."
+    return
+
+label dialog_nekrons_group_a_verdade:
+    nekrons "A verdade ressoa nas paredes como um acorde dissonante."
+    return
+
+label dialog_nekrons_quem_eh:
+    nekrons "Sou Nekrons. Os antigos magos achavam que me possuíam como familiar. Quanta ingenuidade..."
+    return
+
+label dialog_nekrons_nao_gato:
+    nekrons "O formato felino é apenas uma vestimenta confortável para observar o fim de um mundo."
+    return
+
+label dialog_nekrons_o_que_lugar:
+    nekrons "Este observatório não olhava apenas para as estrelas do nosso céu, mas para as frestas de outras realidades."
+    nekrons "No entanto, no momento, o que você precisa está em um lugar muito mais mundano... no topo daquela mesa, pegue a varinha."
+    return
+
+label dialog_nekrons_conhece_eldrin:
+    nekrons "Pobre Eldrin. Ele tenta segurar as comportas de um oceano com as próprias mãos. Uma culpa pesada demais para um homem só."
+    return
+
+label dialog_nekrons_varinha:
+    nekrons "Ela não está quebrada, apenas sem ressonância."
+    "*A gata preta salta até o telescópio, ajustando as lentes para alinhar com uma constelação oculta.*"
+    nekrons "A magia é intenção, forasteiro. Acorde-a com a sua."
+    with vpunch
+    "*A varinha brilha com intensidade e parece pulsar com sua própria vontade.*"
+    $ wand_active = True
+    $ log_event("Nekrons reativou a varinha.")
+    return
+
+label dialog_nekrons_como_magia:
+    nekrons "A magia não é um fogo que se domina, mas um rio que se navega."
+    nekrons "Uma forte convicção é o que materializa a magia."
+    return 
+
+label dialog_nekrons_sobre_verdade:
+    nekrons "Veritas manet quod oblivio delet... Essa frase vibra. É a âncora que Eldrin usou para selar a Torre."
+    nekrons "Quando o conselho manipulou a realidade com o artefato, eles queriam esquecer os pecados, mas a frase os acorrentou."
+    nekrons "Dentro dela reside a chave para quebrar o selo."
+    return
+
 
 # ==============================================================
 # AURELIUM - BIBLIOTECA
@@ -177,66 +306,64 @@ label nekrons_grupo_magia:
 label falar_aurelium_bib:
     show aurelium_book at center with dissolve
     if not met_aurelium:
-        aurelium "Finalmente alguém que lê com os olhos e não apenas com a pressa."
+        aurelium "vozes... tantas vozes... Ah, um leitor de carne e osso. Faz séculos que não sinto o calor de uma mão."
         $ met_aurelium = True
+        $ mark_npc_met("aurelium")
     else:
-        aurelium "Mais perguntas rudimentares? Folheie logo as páginas se procura conhecimento."
+        aurelium "Vire a página, buscador. As areias do tempo não param para ninguém."
         
-label aurelium_talk_loop:
-    menu aurelium_grupos:
-        "Sobre Você" if should_show_aurelium_group("sobre_voce"):
-            jump aurelium_grupo_sobre_voce
-        "Conhecimento" if should_show_aurelium_group("conhecimento"):
-            jump aurelium_grupo_conhecimento
-        "Encerrar conversa":
-            hide aurelium_book with dissolve
-            jump sala_biblioteca_loop
+    call call_npc_dialog("aurelium", "falar_aurelium_bib_end")
+    return
 
-    jump aurelium_talk_loop
+label falar_aurelium_bib_end:
+    hide aurelium_book with dissolve
+    jump sala_biblioteca_loop
 
-label aurelium_grupo_sobre_voce:
-    menu aurelium_sobre_voce:
-        "Quem é você?":
-            $ mark_aurelium_topic_seen("quem_eh")
-            aurelium "Eu sou Aurelium. Um oráculo de no passado, agora confinado a tinta em páginas pela eternidade."
-            jump aurelium_talk_loop
-            
-        "É solitário ser um livro?":
-            $ mark_aurelium_topic_seen("solitario")
-            aurelium "As palavras nunca estão sozinhas. Mas sim, sinto falta de fazer outra coisa além de virar minhas próprias páginas."
-            jump aurelium_talk_loop
-        
-        "← Voltar ao menu":
-            jump aurelium_talk_loop
+label dialog_aurelium_group_sobre_voce:
+    aurelium "Sou apenas o que sobrou de mim mesmo... Ecos e pedaços de um homem sábio."
+    return
 
-label aurelium_grupo_conhecimento:
-    menu aurelium_conhecimento:
-        "O que sabe sobre esta torre?":
-            $ mark_aurelium_topic_seen("sobre_torre")
-            aurelium "Aethra tentou controlar a verdade e falhou feio."
-            jump aurelium_talk_loop
-            
-        "A senha da porta está nas suas páginas?":
-            $ mark_aurelium_topic_seen("senha_porta")
-            aurelium "Não de forma explícita. O selo responde a compreensão, não a memorização cega."
-            jump aurelium_talk_loop
-            
-        "Onde ficavam os alquimistas?" if not knows_oficina and not has_key_oficina:
-            $ mark_aurelium_topic_seen("sobre_alquimistas")
-            aurelium "Ah, os barulhentos dos fundos. Eles trituravam essências puras na velha Oficina de baixo. Eldrin deve ter a chave."
-            $ knows_oficina = True
-            $ log_event("Player aprendeu a existência da Oficina.")
-            jump aurelium_talk_loop
-            
-        "O que pode me dizer sobre essa sala?" if not has_potion:
-            $ mark_aurelium_topic_seen("magia_selamento")
-            aurelium "Há {color=#ffd700}magias de selamento{/color} nesta biblioteca. Você precisa de olhos novos. O alquimista escondia a essencia para enxergar o invisivel em algum lugar dessa biblioteca."
-            jump aurelium_talk_loop
-            
-        "O que significa a frase do mural?" if read_mural:
-            $ mark_aurelium_topic_seen("interpretacao")
-            aurelium "Aparenta ser a verdade sobre o que aconteceu em Aethra. Pense no que o mural diz sobre apagar as falhas..."
-            jump aurelium_talk_loop
-        
-        "← Voltar ao menu":
-            jump aurelium_talk_loop
+label dialog_aurelium_group_conhecimento:
+    aurelium "As prateleiras sabem de coisas... sussurram."
+    return
+
+label dialog_aurelium_group_a_verdade:
+    aurelium "O segredo oculto... está ardendo na tinta."
+    return
+
+label dialog_aurelium_quem_eh:
+    aurelium "Me chamo Aurelium. Fui um humano, um oráculo. Mas minhas profecias eram tão enigmáticas que me puniram aprisionando minha alma a estas páginas."
+    return
+
+label dialog_aurelium_solitario:
+    aurelium "As prateleiras não são quietas. Há ecos aflitos de magos que foram selados aqui. Eles gritam por uma passagem nas paredes..."
+    return
+
+label dialog_aurelium_sobre_torre:
+    aurelium "Um santuário do saber... que virou um matadouro de realidades. Mexeram com forças imensuráveis. O guardião trancou tudo para nos salvar... ou nos condenar."
+    return
+
+label dialog_aurelium_escrituras_estante:
+    aurelium "As runas brilham intensamente acima daquela estante grande. O que dizem?"
+    "*Você olha para a estante, mas não vê brilho algum.*"
+    "Eu não vejo nada."
+    aurelium "Sua visão material é inútil. Você não bebeu nenhuma poção de visão arcana? Estude os livros daquelas estantes, há de haver alguma receita alquímica perdida por ali."
+    $ knows_vision_potion = True
+    $ log_event("Player descobriu sobre a poção de visão através de Aurelium.")
+    return
+
+label dialog_aurelium_sobre_alquimistas:
+    aurelium "Alquimia? Fumaça verde, explosões, frascos que mostram o invisível... Os idiotas brilhantes trabalhavam na Oficina."
+    $ knows_oficina = True
+    $ log_event("Player aprendeu sobre a oficina com Aurelium.")
+    return
+
+label dialog_aurelium_sobre_magia:
+    aurelium "As estrelas... magias ancestrais guiadas por luz. O gato preto vigia o Observatório no andar de cima."
+    $ knows_observatorio = True
+    $ log_event("Player aprendeu sobre o observatorio com Aurelium.")
+    return
+
+label dialog_aurelium_interpretacao:
+    aurelium "A língua antiga de Aethra... Significa algo como 'A verdade permanece onde o esquecimento apaga'. É uma resposta a quem tenta alterar a história com magia."
+    return

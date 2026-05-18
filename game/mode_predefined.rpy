@@ -41,30 +41,19 @@ label intro_predef:
     "Há lugares que não foram abandonados. Foram esquecidos."
     
     scene bg porta_selada with fade
-    "Você desperta no chão de pedra fria. A cabeça dói. Há um zumbido arcano no ar."
+    "*Você desperta no chão de pedra fria. A cabeça dói.* Há um zumbido arcano no ar."
     "À sua frente, uma grande porta selada por runas pulsa com luz fraca. Estantes de livros ocupam as paredes laterais."
     
     show eldrin normal at center with dissolve
-    eldrin "Finalmente acordou. Você está na Torre de Aethra. E, antes que pergunte, sim... ainda há magia aqui."
-    $ log_event("Eldrin: Finalmente acordou. Você está na Torre de Aethra.")
+    eldrin "Finalmente acordou." 
+    eldrin "Você está na Torre esquecida de Aethra, um lugar onde o que foi apagado ainda insiste em permanecer."
+    eldrin "Sou o Guardião desta torre, ou o que restou dela..."
+    $ log_event("Finalmente acordou. Você está na Torre esquecida de Aethra, um lugar onde o que foi apagado ainda insiste em permanecer. Sou o Guardião desta torre, ou o que restou dela...")
 
-    menu dialog_intro:
-        "Onde estou?":
-            $ log_event("Player: Onde estou?")
-            eldrin "Uma torre esquecida. Um lugar onde o que foi apagado ainda insiste em permanecer."
-            $ log_event("Eldrin: Uma torre esquecida. Um lugar onde o que foi apagado ainda insiste em permanecer.")
-        
-        "Quem é você?":
-            $ log_event("Player: Quem é você?")
-            eldrin "Meu nome é Eldrin. Guardião desta torre. Ou o que restou dela."
-            $ log_event("Eldrin: Meu nome é Eldrin. Guardião desta torre. Ou o que restou dela.")
-        
-        "Quero sair daqui.":
-            $ log_event("Player: Quero sair daqui.")
-            eldrin "Então terá de fazer mais do que desejar isso. A porta não responde à pressa."
-            $ log_event("Eldrin: Então terá de fazer mais do que desejar isso. A porta não responde à pressa.")
-
-    eldrin "Se quer sair, primeiro vai precisar entender este lugar. E, se pretende tocar em qualquer coisa aqui, faça isso com cuidado."
+   
+    eldrin "Se quiser sair daqui terá de fazer mais do que desejar isso, a porta não responde à pressa."
+    eldrin "Primeiro, vai precisar entender este lugar, e se pretende tocar em qualquer coisa aqui, faça isso com cuidado."
+    $ log_event("Se quiser sair daqui terá de fazer mais do que desejar isso, a porta não responde à pressa. Primeiro vai precisar entender este lugar, e se pretende tocar em qualquer coisa aqui, faça isso com cuidado.")    
     
     hide eldrin normal with dissolve
     

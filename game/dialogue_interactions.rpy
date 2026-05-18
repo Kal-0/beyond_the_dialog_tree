@@ -173,6 +173,7 @@ label interagir_estante_bib:
         "Livro de Piromancia: Soldados usavam a fala 'Ignis Menor' para aquecer as brasas à noite."
         "Diário de Lendas: Um feiticeiro salvou caravanas da sede clamando 'Aqua Fons'."
         "Fichário Alquímico: Um elixir de Visão pede pó de cristal puro, folha prateada e uma sólida raiz recôndita da escuridão. O resto arruina a poção."
+        $ knows_vision_potion = True
         if has_potion:
             "Imediatamente as páginas parecem desinteressantes, pois seus olhos arcanos revelam um forte brilho violáceo por toda a madeira da estante!"
             "A {color=#ffd700}magia de selamento{/color} cravada nela transparece, implorando pela invocação da palavra '{color=#ffd700}Revelare{/color}'."
@@ -188,6 +189,7 @@ label ler_mural_secreta:
     "'Para trancar nossos erros na torre, cunhei o selo inviolável. Somente aquele que aceitar nossa sentença terá o caminho livre.'"
     "'Que o esquecimento jamais vença enquanto houver registros. Lembre-se, viajante de amanhã: {color=#ffd700}Veritas{/color} é tudo que nos resta. A verdade restaura a memória.'"
     $ read_mural = True
+    $ knows_secret = True
     $ log_event("Player leu o Mural Secreto e descobriu que Veritas resolve o dilema.")
     jump sala_secreta_loop
 

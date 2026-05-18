@@ -12,7 +12,7 @@ init:
         hover_color "#ffd700"
 
 # Forçar Modo Desenvolvedor para atalhos (Shift+R, Shift+O) funcionarem:
-define config.developer = False
+define config.developer = True
 
 # Variáveis Globais (Estado do Jogador e Mundo)
 default dialog_mode = "predef" # "predef", "livre" ou "hibrido"
