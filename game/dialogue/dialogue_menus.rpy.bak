@@ -1,0 +1,226 @@
+# ==============================================================
+# CAMADA 2B: MENUS DINÂMICOS (SHARED)
+# ==============================================================
+
+# Esta tela substitui os blocos "menu:" hardcoded do Ren'Py.
+# Ela é agnóstica em relação ao NPC, gerando os botões com base
+# nas funções da camada CORE e SHARED.
+
+screen npc_dialog_menu(npc_name, active_group=None):
+    style_prefix "choice"
+
+    vbox:
+        if active_group is None:
+            # --------------------------------------------------
+            # EXIBIÇÃO DE GRUPOS (TÓPICOS PAIS)
+            # --------------------------------------------------
+            $ groups = get_available_groups_for_npc(npc_name)
+            for g_key in groups:
+                $ display_text = get_group_display_label(npc_name, g_key)
+                textbutton display_text:
+                    # Retorna um comando de string seguro para evitar previsão de tela
+                    action Return(f"group_{g_key}")
+            
+            # Botão padrão de encerramento
+            textbutton "Encerrar conversa":
+                action Return("end_dialog")
+                
+        else:
+            # --------------------------------------------------
+            # EXIBIÇÃO DE TÓPICOS FILHOS
+            # --------------------------------------------------
+            $ topics = get_topics_by_group(npc_name, active_group)
+            for t_key in topics:
+                $ display_text = get_topic_display_label(npc_name, t_key)
+                textbutton display_text:
+                    action Return(f"topic_{t_key}")
+            
+            textbutton "← Voltar ao menu principal":
+                action Return("back_to_main")
+
+# Label auxiliar para chamar o menu em loop estruturado como Árvore
+label call_npc_dialog(npc_name, idle_jump_label, start_group=None):
+    $ _active_group = start_group
+    
+    label .menu_loop:
+        call screen npc_dialog_menu(npc_name, _active_group)
+        
+        if _return == "end_dialog":
+            $ store.custom_log.append("Player: Encerrar conversa")
+            jump expression idle_jump_label
+            
+        elif _return == "back_to_main":
+            $ store.custom_log.append("Player: Voltar ao menu principal")
+            $ _active_group = None
+            jump .menu_loop
+            
+        elif _return.startswith("group_"):
+            $ group_key = _return.replace("group_", "")
+            $ player_text = NPC_TOPICS[npc_name]["groups"][group_key]["label"]
+            $ store.custom_log.append("Player: " + player_text)
+            $ mark_topic_seen(npc_name, f"group_{group_key}")
+            # Métrica: jogador iniciou um diálogo (selecionou grupo)
+            if game_metrics:
+                $ game_metrics.record_dialog(npc_name)
+            # Chama a fala introdutória do Tópico Pai
+            call expression f"dialog_{npc_name}_group_{group_key}"
+            # Após a fala, abre as perguntas filhas deste grupo
+            $ _active_group = group_key
+            jump .menu_loop
+            
+        elif _return.startswith("topic_"):
+            $ topic_key = _return.replace("topic_", "")
+            $ player_text = NPC_TOPICS[npc_name]["topics"][topic_key]["label"]
+            $ store.custom_log.append("Player: " + player_text)
+            $ mark_topic_seen(npc_name, topic_key)
+            # Métrica: jogador iniciou um diálogo (selecionou tópico)
+            if game_metrics:
+                $ game_metrics.record_dialog(npc_name)
+            call expression f"dialog_{npc_name}_{topic_key}"
+            jump .menu_loop
+
+
+# ==============================================================
+# MODO HÍBRIDO: SCREEN + LOOP (PREDEFINIDO + LIVRE)
+# ==============================================================
+
+# Screen híbrida: mostra opções pré-definidas + botão "Falar livremente..."
+screen npc_dialog_menu_hibrido(npc_name, active_group=None):
+    style_prefix "choice"
+
+    vbox:
+        if active_group is None:
+            # GRUPOS (TÓPICOS PAIS)
+            $ groups = get_available_groups_for_npc(npc_name)
+            for g_key in groups:
+                $ display_text = get_group_display_label(npc_name, g_key)
+                textbutton display_text:
+                    action Return(f"group_{g_key}")
+
+            # Botão de texto livre (destaque visual)
+            textbutton "{color=#88ccff}✦ Falar livremente...{/color}":
+                action Return("free_input")
+
+            textbutton "Encerrar conversa":
+                action Return("end_dialog")
+
+        else:
+            # TÓPICOS FILHOS
+            $ topics = get_topics_by_group(npc_name, active_group)
+            for t_key in topics:
+                $ display_text = get_topic_display_label(npc_name, t_key)
+                textbutton display_text:
+                    action Return(f"topic_{t_key}")
+
+            # Botão de texto livre (disponível também nos sub-menus)
+            textbutton "{color=#88ccff}✦ Falar livremente...{/color}":
+                action Return("free_input")
+
+            textbutton "← Voltar ao menu principal":
+                action Return("back_to_main")
+
+
+# Label auxiliar: loop híbrido que alterna entre predefinido e livre
+label call_npc_dialog_hibrido(npc_name, idle_jump_label, start_group=None):
+    $ _active_group = start_group
+
+    # Mapeamento NPC → histórico de chat e nome de exibição
+    python:
+        _npc_histories = {
+            "eldrin": store.eldrin_chat_history,
+            "skulla": store.skulla_chat_history,
+            "nekrons": store.nekrons_chat_history,
+            "aurelium": store.aurelium_chat_history
+        }
+        _npc_display_names = {
+            "eldrin": "Eldrin",
+            "skulla": "Skulla",
+            "nekrons": "Nekrons",
+            "aurelium": "Aurelium"
+        }
+        _npc_history = _npc_histories.get(npc_name, [])
+        _npc_display = _npc_display_names.get(npc_name, npc_name.capitalize())
+
+    label .menu_loop:
+        call screen npc_dialog_menu_hibrido(npc_name, _active_group)
+
+        if _return == "end_dialog":
+            $ store.custom_log.append("Player: Encerrar conversa")
+            jump expression idle_jump_label
+
+        elif _return == "back_to_main":
+            $ store.custom_log.append("Player: Voltar ao menu principal")
+            $ _active_group = None
+            jump .menu_loop
+
+        elif _return == "free_input":
+            # --- MODO LIVRE: abre campo de texto e envia ao LLM ---
+            $ player_msg = renpy.call_screen("llm_chat_input", _npc_display)
+
+            if player_msg == "__RESET__":
+                $ _npc_history.clear()
+                "[_npc_display] esqueceu a conversa atual."
+                jump .menu_loop
+
+            if player_msg == "__SAIR__" or not player_msg or player_msg.strip() == "":
+                jump expression idle_jump_label
+
+            $ store.append_to_custom_log("Você", player_msg.strip())
+            $ final_response = send_to_llm(npc_name, _npc_history, player_msg.strip())
+            python:
+                _speaker = getattr(store, npc_name)
+                for part in split_dialogue_text(final_response):
+                    renpy.say(_speaker, part)
+            jump .menu_loop
+
+        elif _return.startswith("group_"):
+            $ group_key = _return.replace("group_", "")
+            $ player_text = NPC_TOPICS[npc_name]["groups"][group_key]["label"]
+            $ store.custom_log.append("Player: " + player_text)
+            $ mark_topic_seen(npc_name, f"group_{group_key}")
+            if game_metrics:
+                $ game_metrics.record_dialog(npc_name)
+            # Snapshot do log antes da fala scriptada
+            $ _log_before = len(store.custom_log)
+            call expression f"dialog_{npc_name}_group_{group_key}"
+            # Captura falas do NPC para injetar no histórico LLM
+            python:
+                _new_entries = store.custom_log[_log_before:]
+                _npc_speech_parts = []
+                for _e in _new_entries:
+                    _e_str = str(_e)
+                    if not _e_str.startswith("Player:") and not _e_str.startswith("Você:") and not _e_str.startswith("Narração:"):
+                        _colon_pos = _e_str.find(": ")
+                        if _colon_pos > 0:
+                            _npc_speech_parts.append(_e_str[_colon_pos+2:])
+                if _npc_speech_parts:
+                    _npc_history.append({"role": "user", "content": player_text})
+                    _npc_history.append({"role": "assistant", "content": " ".join(_npc_speech_parts)})
+            $ _active_group = group_key
+            jump .menu_loop
+
+        elif _return.startswith("topic_"):
+            $ topic_key = _return.replace("topic_", "")
+            $ player_text = NPC_TOPICS[npc_name]["topics"][topic_key]["label"]
+            $ store.custom_log.append("Player: " + player_text)
+            $ mark_topic_seen(npc_name, topic_key)
+            if game_metrics:
+                $ game_metrics.record_dialog(npc_name)
+            # Snapshot do log antes da fala scriptada
+            $ _log_before = len(store.custom_log)
+            call expression f"dialog_{npc_name}_{topic_key}"
+            # Captura falas do NPC para injetar no histórico LLM
+            python:
+                _new_entries = store.custom_log[_log_before:]
+                _npc_speech_parts = []
+                for _e in _new_entries:
+                    _e_str = str(_e)
+                    if not _e_str.startswith("Player:") and not _e_str.startswith("Você:") and not _e_str.startswith("Narração:"):
+                        _colon_pos = _e_str.find(": ")
+                        if _colon_pos > 0:
+                            _npc_speech_parts.append(_e_str[_colon_pos+2:])
+                if _npc_speech_parts:
+                    _npc_history.append({"role": "user", "content": player_text})
+                    _npc_history.append({"role": "assistant", "content": " ".join(_npc_speech_parts)})
+            jump .menu_loop
+

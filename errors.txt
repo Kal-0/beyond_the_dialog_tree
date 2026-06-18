@@ -2,90 +2,9 @@
 errors listed below, and try again.
 
 
-The label falar_eldrin_porta is defined twice, at File "game/dialogues_eldrin.rpy", line 5:
-and File "game/dialogues_npcs.rpy", line 5:
-label falar_eldrin_porta:
-
-
-The label falar_eldrin_porta_end is defined twice, at File "game/dialogues_eldrin.rpy", line 17:
-and File "game/dialogues_npcs.rpy", line 17:
-label falar_eldrin_porta_end:
-
-
-The label dialog_eldrin_quem_eh is defined twice, at File "game/dialogues_eldrin.rpy", line 25:
-and File "game/dialogues_npcs.rpy", line 53:
-label dialog_eldrin_quem_eh:
-
-
-The label dialog_eldrin_testando is defined twice, at File "game/dialogues_eldrin.rpy", line 29:
-and File "game/dialogues_npcs.rpy", line 57:
-label dialog_eldrin_testando:
-
-
-The label dialog_eldrin_confianca is defined twice, at File "game/dialogues_eldrin.rpy", line 35:
-and File "game/dialogues_npcs.rpy", line 63:
-label dialog_eldrin_confianca:
-
-
-The label dialog_eldrin_por_que_guarda is defined twice, at File "game/dialogues_eldrin.rpy", line 39:
-and File "game/dialogues_npcs.rpy", line 67:
-label dialog_eldrin_por_que_guarda:
-
-
-The label dialog_eldrin_selada is defined twice, at File "game/dialogues_eldrin.rpy", line 43:
-and File "game/dialogues_npcs.rpy", line 71:
-label dialog_eldrin_selada:
-
-
-The label dialog_eldrin_magia_antiga is defined twice, at File "game/dialogues_eldrin.rpy", line 47:
-and File "game/dialogues_npcs.rpy", line 75:
-label dialog_eldrin_magia_antiga:
-
-
-The label dialog_eldrin_o_que_fazer is defined twice, at File "game/dialogues_eldrin.rpy", line 70:
-and File "game/dialogues_npcs.rpy", line 84:
-label dialog_eldrin_o_que_fazer:
-
-
-The label dialog_eldrin_direcionamento is defined twice, at File "game/dialogues_eldrin.rpy", line 74:
-and File "game/dialogues_npcs.rpy", line 88:
-label dialog_eldrin_direcionamento:
-
-
-The label dialog_eldrin_aonde_ir is defined twice, at File "game/dialogues_eldrin.rpy", line 78:
-and File "game/dialogues_npcs.rpy", line 95:
-label dialog_eldrin_aonde_ir:
-
-
-The label dialog_eldrin_procura_oficina is defined twice, at File "game/dialogues_eldrin.rpy", line 82:
-and File "game/dialogues_npcs.rpy", line 99:
-label dialog_eldrin_procura_oficina:
-
-
-The label dialog_eldrin_perdido is defined twice, at File "game/dialogues_eldrin.rpy", line 93:
-and File "game/dialogues_npcs.rpy", line 103:
-label dialog_eldrin_perdido:
-
-
-The label dialog_eldrin_torre_esconde is defined twice, at File "game/dialogues_eldrin.rpy", line 101:
-and File "game/dialogues_npcs.rpy", line 107:
-label dialog_eldrin_torre_esconde:
-
-
-The label dialog_eldrin_procura_observatorio is defined twice, at File "game/dialogues_eldrin.rpy", line 86:
-and File "game/dialogues_npcs.rpy", line 113:
-label dialog_eldrin_procura_observatorio:
-
-
-The label dialog_eldrin_magia_funciona is defined twice, at File "game/dialogues_eldrin.rpy", line 108:
-and File "game/dialogues_npcs.rpy", line 119:
-label dialog_eldrin_magia_funciona:
-
-
-The label dialog_eldrin_encarando is defined twice, at File "game/dialogues_eldrin.rpy", line 115:
-and File "game/dialogues_npcs.rpy", line 126:
-label dialog_eldrin_encarando:
-
+File "game/dialogue/free_llm/llm_prompts.rpy", line 220: expected an indented block after 'if' statement on line 216
+    regras.append("- DICA PROATIVA: APENAS se o jogador não souber o que fazer, pedir ajuda ou parecer perdido, seja DIRETA: Mande-o pegar a antiga varinha na mesa e ensine que ele precisa focar sua intenção para ativá-la.")
+    ^^^^^^
 
 Ren'Py Version: Ren'Py 8.5.2.26010301
-Wed May 13 12:41:48 2026
+Thu Jun 18 05:47:04 2026

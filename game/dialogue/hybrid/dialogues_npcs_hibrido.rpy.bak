@@ -1,0 +1,135 @@
+# ==============================================================
+# DIÁLOGOS DOS NPCS - MODO HÍBRIDO (PRÉ-DEFINIDO + LIVRE)
+# ==============================================================
+# Combina as opções pré-definidas (scriptadas) com texto livre (LLM).
+# Usa as mesmas labels de diálogo do modo pré-definido para respostas
+# scriptadas, e o send_to_llm() para respostas livres.
+# Falas scriptadas são capturadas e injetadas no histórico do LLM
+# para manter coerência entre os dois modos.
+# ==============================================================
+
+
+# ==============================================================
+# ELDRIN - MODO HÍBRIDO
+# ==============================================================
+
+label falar_eldrin_hibrido:
+    if game_metrics:
+        $ game_metrics.record_dialog("eldrin")
+    show eldrin normal at left with dissolve
+    if not met_eldrin:
+        eldrin "Encontrou algo em meio aos restos deste lugar? Ou só veio me observar, forasteiro?"
+        $ met_eldrin = True
+        $ mark_npc_met("eldrin")
+        # Injeta a fala de primeiro encontro no histórico LLM
+        python:
+            _greeting = "Encontrou algo em meio aos restos deste lugar? Ou só veio me observar, forasteiro?"
+            store.eldrin_chat_history.append({"role": "user", "content": "(O jogador se aproximou pela primeira vez.)"})
+            store.eldrin_chat_history.append({"role": "assistant", "content": _greeting})
+    else:
+        if read_mural and not eldrin_reacted_mural:
+            $ eldrin_reacted_mural = True
+            # Reação proativa ao mural via LLM
+            $ _initial_prompt = "(O jogador acabou de retornar. Você sente que ele descobriu algo importante escondido na torre. Pergunte com cautela e desconfiança o que ele encontrou lá dentro, demonstrando tensão.)"
+            $ _response = send_to_llm("eldrin", eldrin_chat_history, _initial_prompt)
+            python:
+                for part in split_dialogue_text(_response):
+                    renpy.say(eldrin, part)
+        else:
+            eldrin "Ainda rondando a porta? A pressa não vai quebrar este selo. O que você quer?"
+
+    call call_npc_dialog_hibrido("eldrin", "falar_eldrin_porta_end")
+    return
+
+
+# ==============================================================
+# SKULLA - MODO HÍBRIDO
+# ==============================================================
+
+label falar_skulla_hibrido:
+    if game_metrics:
+        $ game_metrics.record_dialog("skulla")
+    show skulla at right with dissolve
+    if not met_skulla:
+        skulla "Ah, ótimo. Mais um herói perdido que vem de outro mundo. Bem-vindo à minha humilde bancada de decomposição."
+        $ met_skulla = True
+        $ mark_npc_met("skulla")
+        python:
+            _greeting = "Ah, ótimo. Mais um herói perdido que vem de outro mundo. Bem-vindo à minha humilde bancada de decomposição."
+            store.skulla_chat_history.append({"role": "user", "content": "(O jogador se aproximou pela primeira vez.)"})
+            store.skulla_chat_history.append({"role": "assistant", "content": _greeting})
+    else:
+        if read_mural and not skulla_reacted_mural:
+            $ skulla_reacted_mural = True
+            $ _initial_prompt = "(O jogador voltou. Você ouviu que ele fuçou na torre e descobriu algo secreto. Faça um comentário sarcástico sobre ele ser um fuçador, pergunte debochada o que ele descobriu, e quando ele responder sobre a frase do mural, descarte com escárnio e pergunte diretamente: 'Você confia no Eldrin?')"
+            $ _response = send_to_llm("skulla", skulla_chat_history, _initial_prompt)
+            python:
+                for part in split_dialogue_text(_response):
+                    renpy.say(skulla, part)
+        else:
+            skulla "Esse caldeirão não se ferve sozinho. O que você quer? Não vê que estou ocupada estando morta?"
+
+    call call_npc_dialog_hibrido("skulla", "falar_skulla_oficina_end")
+    return
+
+
+# ==============================================================
+# NEKRONS - MODO HÍBRIDO
+# ==============================================================
+
+label falar_nekrons_hibrido:
+    if game_metrics:
+        $ game_metrics.record_dialog("nekrons")
+    show nekrons at center with dissolve
+    if not met_nekrons:
+        nekrons "Bem-vindo ao topo do mundo esquecido. Vejo que os fios do seu destino não se prendem a Aethra."
+        $ met_nekrons = True
+        $ mark_npc_met("nekrons")
+        python:
+            _greeting = "Bem-vindo ao topo do mundo esquecido. Vejo que os fios do seu destino não se prendem a Aethra."
+            store.nekrons_chat_history.append({"role": "user", "content": "(O jogador se aproximou pela primeira vez.)"})
+            store.nekrons_chat_history.append({"role": "assistant", "content": _greeting})
+    else:
+        if read_mural and not nekrons_reacted_mural:
+            $ nekrons_reacted_mural = True
+            $ _initial_prompt = "(O jogador retornou. Você sentiu uma perturbação no éter, como se verdades antigas tivessem sido desenterradas em algum lugar da torre. Comente isso de forma mística e poética, e pergunte ao jogador o que ele encontrou.)"
+            $ _response = send_to_llm("nekrons", nekrons_chat_history, _initial_prompt)
+            python:
+                for part in split_dialogue_text(_response):
+                    renpy.say(nekrons, part)
+        else:
+            nekrons "As centelhas no ar indicaram que você voltaria."
+
+    call call_npc_dialog_hibrido("nekrons", "falar_nekrons_obs_end")
+    return
+
+
+# ==============================================================
+# AURELIUM - MODO HÍBRIDO
+# ==============================================================
+
+label falar_aurelium_hibrido:
+    if game_metrics:
+        $ game_metrics.record_dialog("aurelium")
+    show aurelium_book at center with dissolve
+    if not met_aurelium:
+        aurelium "Vozes... tantas vozes... Ah, um leitor de carne e osso. Faz séculos que não sinto o calor de uma mão."
+        $ met_aurelium = True
+        $ mark_npc_met("aurelium")
+        python:
+            _greeting = "Vozes... tantas vozes... Ah, um leitor de carne e osso. Faz séculos que não sinto o calor de uma mão."
+            store.aurelium_chat_history.append({"role": "user", "content": "(O jogador se aproximou pela primeira vez.)"})
+            store.aurelium_chat_history.append({"role": "assistant", "content": _greeting})
+    else:
+        if read_mural and not aurelium_reacted_mural:
+            $ aurelium_reacted_mural = True
+            $ _initial_prompt = "(O jogador voltou à biblioteca. Você sentiu a estante de pedra se abrir e uma energia antiga fluir da passagem secreta. Pergunte ansioso e esperançoso o que ele descobriu lá dentro, demonstrando excitação e curiosidade.)"
+            $ _response = send_to_llm("aurelium", aurelium_chat_history, _initial_prompt)
+            python:
+                for part in split_dialogue_text(_response):
+                    renpy.say(store.aurelium, part)
+        else:
+            aurelium "Vire a página, buscador. As areias do tempo não param para ninguém."
+
+    call call_npc_dialog_hibrido("aurelium", "falar_aurelium_bib_end")
+    return

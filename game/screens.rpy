@@ -98,6 +98,8 @@ style frame:
 
 screen say(who, what):
     style_prefix "say"
+    
+    on "show" action Function(store.append_to_custom_log, who, what)
 
     window:
         id "window"
@@ -225,7 +227,7 @@ screen choice(items):
     vbox:
         for i in items:
             textbutton i.caption:
-                action [Function(seen_choices_set.add, i.caption), i.action]
+                action [Function(seen_choices_set.add, i.caption), Function(store.append_to_custom_log, "Você", i.caption), i.action]
                 if i.caption in seen_choices_set:
                     text_color "#555555"
 
