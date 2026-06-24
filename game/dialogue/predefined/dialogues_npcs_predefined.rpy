@@ -213,9 +213,9 @@ label dialog_eldrin_provando_verdade:
     eldrin "Diga-me então. O que aquela frase significa?"
     
     menu:
-        "A verdade permanece ativa, mesmo quando a memória a apaga.":
+        "[senha_porta!c] permanece inalterável, mesmo quando a memória apaga tudo.":
             eldrin "Sim! Você compreendeu!"
-            eldrin "Nós tentamos apagar a dor das nossas falhas apagando as memórias da própria realidade. Mas a verdade é uma rocha que não pode ser desfeita."
+            eldrin "Nós tentamos apagar a dor das nossas falhas apagando as memórias da própria realidade. Mas [senha_porta] é algo que não pode ser desfeito."
             eldrin "Seu entendimento provou que eu estava certo em... em trazê-lo para cá."
             $ eldrin_trust += 2
 
@@ -235,7 +235,7 @@ label dialog_eldrin_provando_verdade:
             eldrin "Vá refletir sobre o mural. Converse com os outros. Talvez eles consigam abrir seus olhos para o que eu não consigo."
             $ eldrin_trust -= 2
 
-        "A Skulla já me contou a verdade. Significa que você me invocou para limpar sua própria bagunça!" if knows_invocation_secret:
+        "A Skulla já me contou: [senha_porta]. Significa que você me invocou para limpar sua própria bagunça!" if knows_invocation_secret:
             eldrin "A caveira sempre teve a língua solta... até quando não tem língua."
             eldrin "Mas não muda nada. Você está aqui, e o selo precisa ser quebrado."
             eldrin "Eu fiz o que precisava ser feito para salvar Aethra. Se você não entende isso, então não temos mais o que conversar."
@@ -276,7 +276,7 @@ label dialog_skulla_group_conhecimento:
     return
 
 label dialog_skulla_group_a_verdade:
-    skulla "A 'verdade'? haha...(Risada seca). Vamos ver o quanto você é inocente."
+    skulla "'[senha_porta!c]'? haha...(Risada seca). Vamos ver o quanto você é inocente."
     return
 
 # --- TÓPICOS FILHOS: SKULLA ---
@@ -319,7 +319,7 @@ label dialog_skulla_sobre_observatorio:
 
 label dialog_skulla_sobre_verdade:
     skulla "Pfft... que bando de idiotices."
-    skulla "Como se a verdade fosse algo que sobrevive numa torre de mentiras."
+    skulla "Como se [senha_porta] fosse algo que sobrevive numa torre de mentiras."
     skulla "É só mais uma frase bonita que Eldrin repetiria para si mesmo no espelho para justificar nos ter enterrado vivos!"
     skulla "Se tem coragem, desfaça o selo e vá embora. A torre é uma prisão, não um escudo."
     
@@ -380,7 +380,7 @@ label dialog_nekrons_group_magia:
     return
 
 label dialog_nekrons_group_a_verdade:
-    nekrons "A verdade ressoa nas paredes como um acorde dissonante."
+    nekrons "[senha_porta!c] ressoa nas paredes como um acorde dissonante."
     return
 
 # --- TÓPICOS FILHOS: NEKRONS ---
@@ -418,9 +418,9 @@ label dialog_nekrons_varinha:
     nekrons "Ela não está quebrada, apenas sem ressonância."
     "*A gata preta observa a varinha em suas mãos.*"
     nekrons "A magia é intenção, forasteiro. Para acordar um conduíte arcano, você precisa preenchê-lo com luz primordial."
-    nekrons "Concentre-se e pronuncie a palavra '{color=#ffd700}Lumos{/color}' enquanto a empunha."
+    nekrons "Concentre-se e pronuncie a palavra '{color=#ffd700}[spell_light!c]{/color}' enquanto a empunha."
     nekrons "Isso será o suficiente para despertá-la."
-    $ log_event("Nekrons ensinou lumos para reativar a varinha.")
+    $ log_event("Nekrons ensinou '[spell_light]' para reativar a varinha.")
     return
 
 label dialog_nekrons_como_magia:
@@ -429,7 +429,7 @@ label dialog_nekrons_como_magia:
     return 
 
 label dialog_nekrons_sobre_verdade:
-    nekrons "Veritas manet quod oblivio delet..."
+    nekrons "[senha_latim] manet quod oblivio delet..."
     nekrons "Essa frase vibra nas profundezas da torre. Existe uma palavra nela que ressoa com o resto desse lugar."
     nekrons "Eu consigo sentir sua vibração... como um coração batendo dentro do selo."
     return
@@ -510,7 +510,7 @@ label dialog_aurelium_sobre_alquimistas:
 
 label dialog_aurelium_interpretacao:
     aurelium "A língua antiga de Aethra... Deixe-me ver..."
-    aurelium "Significa algo como: 'A verdade permanece onde o esquecimento apaga'."
-    aurelium "É uma sentença. Um juízo. Quem escreveu isso acreditava que a verdade é indestrutível, mesmo quando tudo ao redor é apagado."
+    aurelium "Significa algo como: '[senha_porta!c] permanece onde o esquecimento apaga'."
+    aurelium "É uma sentença. Um juízo. Quem escreveu isso acreditava que [senha_porta] é indestrutível, mesmo quando tudo ao redor é apagado."
     aurelium "Há algo nessa frase que me faz sentir... que a resposta está mais perto do que parece. Mas não consigo precisar o quê."
     return

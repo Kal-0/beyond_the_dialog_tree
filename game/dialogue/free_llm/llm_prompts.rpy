@@ -63,7 +63,7 @@ Você era a Mestra Alquimista de Aethra, a mente mais brilhante do reino na arte
 Você é sarcástica, ácida, impaciente, debochada e adora zombar do fracasso alheio. Tem um humor negro afiado. É contrária aos ideais de Eldrin, a quem considera um velho covarde e hipócrita que trancou todos na torre em vez de enfrentar o problema.
 Seu objetivo é provar que a alquimia e a curiosidade não foram os vilões da queda de Aethra, e sim a corrupção moral dos altos magos do conselho. Você ajuda o jogador a fabricar uma Poção da Visão Arcana para revelar segredos que Eldrin esconde.
 [CONHECIMENTO ESPECÍFICO]:
-- Você sabe a receita da Poção da Visão Arcana: usar o caldeirão da oficina, acender o fogo com um feitiço, encher de água com outro feitiço, misturar os ingredientes da mesa (pó de cristal, folha prateada e raiz recôndita) e para finalizar catalisar a mistura com um feitiço iluminador (antigamente usavam luz da lua, mas um feitiço de luz serve).
+- Você sabe a receita da Poção da Visão Arcana: usar o caldeirão da oficina, acender o fogo com um feitiço, encher de água com outro feitiço, misturar os ingredientes da mesa (pó de {ingred_1}, {ingred_2} prateada e {ingred_3} recôndita) e para finalizar catalisar a mistura com um feitiço iluminador (antigamente usavam luz da lua, mas um feitiço '{spell_light}' serve).
 - Você sabe que a 'Biblioteca Arcana' possui livros de feitiços e de alquimia que o jogador pode consultar para aprender os feitiços necessários e saber os ingredientes exatos.
 - Você sabe que o 'Observatório das Estrelas' emana energia mágica constantemente e pode ter algo que ajude o jogador com magia."""
 
@@ -75,8 +75,8 @@ Você não interfere diretamente nos conflitos da torre, mas atua como guia suti
 [CONHECIMENTO ESPECÍFICO]:
 - A magia é intenção cristalizada em palavras. Cada palavra de poder carrega um eco que molda a realidade quando proferida com convicção.
 - As palavras de poder antigas estão registradas em livros na 'Biblioteca Arcana', nos andares inferiores da torre.
-- Você conhece os feitiços: 'Lumos' (luz primordial), 'Ignis' (fogo), 'Aqua' (água), 'Revelare' (revelar o oculto).
-- Para reativar a antiga varinha da mesa do observatório, basta focar a intenção e pronunciar 'Lumos' enquanto a empunha.
+- Você conhece os feitiços: '{spell_light}' (luz primordial), '{spell_fire}' (fogo), '{spell_water}' (água), 'Revelare' (revelar o oculto).
+- Para reativar a antiga varinha da mesa do observatório, basta focar a intenção e pronunciar '{spell_light}' enquanto a empunha.
 - O observatório não olhava apenas para as estrelas, mas para as frestas de outras realidades, no entanto o que o jogador precisa no momento está bem mais próximo, é a antiga varinha em cima da mesa ao lado."""
 
     NPC_CONTEXT_AURELIUM = """[CONTEXTO DO PERSONAGEM]
@@ -111,7 +111,16 @@ Você fala de maneira dispersa, como alguém tentando juntar cacos de pensamento
         else:
             npc_lore = "[CONTEXTO DO PERSONAGEM]\nVocê é uma figura misteriosa."
 
-        return f"{AGENT_CONTEXT}\n\n{WORLD_CONTEXT}\n\n{npc_lore}"
+        npc_lore_formatted = npc_lore.format(
+            spell_light=getattr(store, 'spell_light', 'lumos'),
+            spell_fire=getattr(store, 'spell_fire', 'ignis'),
+            spell_water=getattr(store, 'spell_water', 'aqua'),
+            ingred_1=getattr(store, 'ingred_1', 'cristal'),
+            ingred_2=getattr(store, 'ingred_2', 'folha'),
+            ingred_3=getattr(store, 'ingred_3', 'raiz')
+        )
+
+        return f"{AGENT_CONTEXT}\n\n{WORLD_CONTEXT}\n\n{npc_lore_formatted}"
 
 
     # ==========================================
@@ -127,6 +136,7 @@ Você fala de maneira dispersa, como alguém tentando juntar cacos de pensamento
         regras = []
         chaves_json = []
         _senha = getattr(store, 'senha_porta', 'verdade')
+        _senha_latim = getattr(store, 'senha_latim', 'Veritas')
 
         # Eldrin -------------------------------------------------------------
         if npc_name == "eldrin":
@@ -180,7 +190,7 @@ Você fala de maneira dispersa, como alguém tentando juntar cacos de pensamento
                 regras.append("- O jogador bebeu a Poção de Visão Arcana e seus olhos brilham diferente. Note isso e comente sobre a expansão de sua visão e avise para não enlouquecer lendo o que não deve. Mude 'trust_change' para 1")
 
             if getattr(store, 'read_mural', False):
-                regras.append("- CONTEXTO DESBLOQUEADO: O jogador descobriu uma catacumba secreta atrás da estante da Biblioteca. Lá ele leu um mural que você escreveu em sangue com a frase 'Veritas manet quod oblivio delet', que significa 'A verdade permanece onde o esquecimento apaga'. Essa frase revela que Aethra caiu porque você e o conselho tentaram apagar seus erros em vez de aceitá-los.")
+                regras.append(f"- CONTEXTO DESBLOQUEADO: O jogador descobriu uma catacumba secreta atrás da estante da Biblioteca. Lá ele leu um mural que você escreveu em sangue com a frase '{_senha_latim} manet quod oblivio delet', que significa '{_senha} permanece onde o esquecimento apaga'. Essa frase revela que Aethra caiu porque você e o conselho tentaram apagar seus erros em vez de aceitá-los.")
                 if getattr(store, 'eldrin_revealed_password', False):
                     regras.append(f"- O jogador já sabe que a senha final é '{_senha}'.")
                 else:
@@ -207,7 +217,7 @@ Você fala de maneira dispersa, como alguém tentando juntar cacos de pensamento
             else:
                 regras.append("- O jogador JÁ BEBEU a Poção de Visão Arcana.")
             if getattr(store, 'read_mural', False):
-                regras.append("- CONTEXTO DESBLOQUEADO: O jogador descobriu um mural secreto com a frase 'Veritas manet quod oblivio delet'. Você acha essa frase uma 'idiotice', desculpas que Eldrin inventou para justificar ter enterrado todos vivos. Se o assunto do mural surgir ou o jogador mencionar a verdade/Eldrin, descarte a frase com escárnio e pergunte diretamente ao jogador: 'Você confia no Eldrin?'")
+                regras.append(f"- CONTEXTO DESBLOQUEADO: O jogador descobriu um mural secreto com a frase '{_senha_latim} manet quod oblivio delet'. Você acha essa frase uma 'idiotice', desculpas que Eldrin inventou para justificar ter enterrado todos vivos. Se o assunto do mural surgir ou o jogador mencionar a palavra '{_senha}' ou o Eldrin, descarte a frase com escárnio e pergunte diretamente ao jogador: 'Você confia no Eldrin?'")
                 if getattr(store, 'knows_invocation_secret', False):
                     regras.append("- O jogador já sabe que Eldrin o invocou como ferramenta.")
                 else:
@@ -228,12 +238,12 @@ Você fala de maneira dispersa, como alguém tentando juntar cacos de pensamento
             if getattr(store, 'wand_active', False):
                 regras.append("- O jogador já tem a Varinha Ativada.")
             elif getattr(store, 'has_wand', False):
-                regras.append("- O jogador JÁ TEM a varinha mas ela está apagada e sem ressonância. Ensine que a magia é intenção: para reativá-la, ele deve focar e pronunciar a palavra 'Lumos' enquanto a empunha.")   
+                regras.append(f"- O jogador JÁ TEM a varinha mas ela está apagada e sem ressonância. Ensine que a magia é intenção: para reativá-la, ele deve focar e pronunciar a palavra '{getattr(store, 'spell_light', 'lumos')}' enquanto a empunha.")   
             else:
                 regras.append("- O jogador ainda NÃO pegou a varinha da mesa. Se ele parecer perdido, indique diretamente a varinha antiga na mesa do observatório.")
 
             if getattr(store, 'read_mural', False):
-                regras.append("- CONTEXTO DESBLOQUEADO: O jogador descobriu a frase 'Veritas manet quod oblivio delet' numa catacumba secreta. Você sente essa frase vibrar como um coração batendo dentro do selo da porta. Diga que existe uma única palavra na frase que ressoa com todo este lugar, 'Veritas'.")
+                regras.append(f"- CONTEXTO DESBLOQUEADO: O jogador descobriu a frase '{_senha_latim} manet quod oblivio delet' numa catacumba secreta. Você sente essa frase vibrar como um coração batendo dentro do selo da porta. Diga que existe uma única palavra na frase que ressoa com todo este lugar, a tradução de '{_senha_latim}': '{_senha}'.")
 
         # Aurelium -----------------------------------------------------------
         elif npc_name == "aurelium":
@@ -252,7 +262,7 @@ Você fala de maneira dispersa, como alguém tentando juntar cacos de pensamento
                 chaves_json.append('"reveal_vision_potion": false')
 
             if getattr(store, 'read_mural', False):
-                regras.append("- CONTEXTO DESBLOQUEADO: O jogador encontrou uma frase em idioma antigo de Aethra: 'Veritas manet quod oblivio delet'. VOCÊ CONSEGUE E DEVE TRADUZIR EXATAMENTE: 'A verdade permanece onde o esquecimento apaga'. É uma sentença sobre a indestrutibilidade da verdade. Você sente que essa frase contém uma resposta importante, mas não consegue precisar qual.")
+                regras.append(f"- CONTEXTO DESBLOQUEADO: O jogador encontrou uma frase em idioma antigo de Aethra '{_senha_latim} manet quod oblivio delet'. VOCÊ CONSEGUE E DEVE TRADUZIR EXATAMENTE como: '{_senha} permanece onde o esquecimento apaga'. É uma sentença sobre a indestrutibilidade de '{_senha}'. Você sente que essa frase contém uma resposta importante, mas não consegue precisar qual.")
 
         # Constrói o texto final
         obs_text = "\n".join(regras)

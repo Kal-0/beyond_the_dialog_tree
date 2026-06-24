@@ -38,9 +38,9 @@ init python:
         """
         keywords = [
             "Biblioteca Arcana", "Oficina Alquímica", "Observatório das Estrelas",
-            "Poção de Visão Arcana", "Veritas manet quod oblivio delet",
+            "Poção de Visão Arcana", f"{store.senha_latim} manet quod oblivio delet",
             "varinha antiga", "estante de pedra", "Observatório", "Biblioteca", 
-            "Oficina", "Poção", "Veritas", "Lumos", "varinha", "estante", "selo", "senha"
+            "Oficina", "Poção", f"{store.senha_latim}", f"{store.spell_light}", f"{store.spell_fire}", f"{store.spell_water}", "revelare", f"{store.ingred_1}", f"{store.ingred_2}", f"{store.ingred_3}", "varinha", "estante", "selo", "senha"
         ]
         
         # Cria a regex ignorando caixa alta/baixa, buscando as palavras inteiras (\b)

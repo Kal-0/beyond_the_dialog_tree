@@ -12,12 +12,41 @@ init:
         hover_color "#ffd700"
 
 # Forçar Modo Desenvolvedor para atalhos (Shift+R, Shift+O) funcionarem:
-define config.developer = False
+define config.developer = True
+
+init python:
+    import random
+    
+    SENHAS_POSSIVEIS = ["verdade", "fato", "realidade", "existência"]
+    LATIN_SENHAS = {
+        "verdade": "Veritas",
+        "fato": "Veritas",
+        "realidade": "Veritas",
+        "existência": "Veritas"
+        # "fato": "Factum",
+        # "realidade": "Realitas",
+        # "existência": "Existentia"
+    }
+    
+    SPELL_LIGHT_POSSIVEIS = ["lumos", "lux", "fulgor", "luz"]
+    SPELL_FIRE_POSSIVEIS = ["ignis", "flama", "pyre", "fogo"]
+    SPELL_WATER_POSSIVEIS = ["aqua", "hydra", "pluvia", "chuva"]
+    
+    INGRED_1_POSSIVEIS = ["cristal", "diamante", "obsidiana"]
+    INGRED_2_POSSIVEIS = ["folha", "petala", "casca"]
+    INGRED_3_POSSIVEIS = ["raiz", "semente", "esporo"]
 
 # Variáveis Globais (Estado do Jogador e Mundo)
 default player_email = ""
 default dialog_mode = "predef" # "predef", "livre" ou "hibrido"
 default senha_porta = "verdade"
+default senha_latim = "Veritas"
+default spell_light = "lumos"
+default spell_fire = "ignis"
+default spell_water = "aqua"
+default ingred_1 = "cristal"
+default ingred_2 = "folha"
+default ingred_3 = "raiz"
 default eldrin_trust = 0
 default has_wand = False
 default has_potion = False
@@ -77,6 +106,16 @@ default aurelium_chat_history = []
 # ==============================================================
 label start:
     scene black
+    
+    python:
+        senha_porta = random.choice(SENHAS_POSSIVEIS)
+        senha_latim = LATIN_SENHAS[senha_porta]
+        spell_light = random.choice(SPELL_LIGHT_POSSIVEIS)
+        spell_fire = random.choice(SPELL_FIRE_POSSIVEIS)
+        spell_water = random.choice(SPELL_WATER_POSSIVEIS)
+        ingred_1 = random.choice(INGRED_1_POSSIVEIS)
+        ingred_2 = random.choice(INGRED_2_POSSIVEIS)
+        ingred_3 = random.choice(INGRED_3_POSSIVEIS)
     
     # --- Coleta de email para métricas acadêmicas ---
     "Este jogo faz parte de um Trabalho de Conclusão de Curso (TCC)."

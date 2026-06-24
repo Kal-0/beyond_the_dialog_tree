@@ -145,7 +145,7 @@ label final_sequence:
     
     show eldrin normal at center with dissolve
     
-    # --- Eldrin revela a verdade sobre a invocação ---
+    # --- Eldrin revela a [senha_porta] sobre a invocação ---
     
     if not eldrin_revealed_password:
         if eldrin_trust <= 4:
@@ -154,11 +154,11 @@ label final_sequence:
             eldrin "Eu... preciso ser honesto com você, forasteiro."
         else:
             eldrin "Você... você encontrou o caminho por conta própria."
-            eldrin "Mesmo diante de minhas suspeitas e de meu silêncio, sua mente buscou a verdade nas sombras."
-            eldrin "Sua sabedoria me provou errado. Você merece a verdade."
+            eldrin "Mesmo diante de minhas suspeitas e de meu silêncio, sua mente buscou [senha_porta] nas sombras."
+            eldrin "Sua sabedoria me provou errado. Você merece: [senha_porta]."
     else:
         eldrin "Você usou a palavra que lhe confiei. Bem."
-        eldrin "Agora que o selo foi desfeito, é hora de lhe contar a verdade que guardei durante todo esse tempo."
+        eldrin "Agora que o selo foi desfeito, é hora de lhe contar o segredo que guardei durante todo esse tempo."
     
 
     if knows_invocation_secret:
@@ -175,7 +175,7 @@ label final_sequence:
         eldrin "Você não veio parar aqui por acaso, forasteiro. Fui eu quem o trouxe."
         eldrin "Eu invoquei você de outra dimensão, outra realidade. Um ato desesperado de um homem que não tinha mais opções."
 
-    eldrin "Os magos de Aethra descobriram um artefato amaldiçoado capaz de manipular a própria realidade. Eles o usaram para apagar suas falhas, distorcendo a verdade."
+    eldrin "Os magos de Aethra descobriram um artefato amaldiçoado capaz de manipular a própria realidade. Eles o usaram para apagar suas falhas, distorcendo: [senha_porta]."
     eldrin "Quando percebi a corrupção se espalhando, inclusive em mim mesmo, selei toda Aethra em uma dimensão alternativa. Separei nosso reino do resto do multiverso."
     eldrin "Mas eu não posso destruir o artefato. A corrupção em mim, por menor que seja, me impede. Eu precisava de alguém de fora, alguém que o artefato não pudesse tocar."
     if eldrin_trust >=0 and (eldrin_trust >= 8 or knows_invocation_secret):
@@ -286,7 +286,7 @@ label final_quebrar_selo:
     eldrin "Então você vai... Você realmente vai tentar."
     eldrin "*Eldrin suspira com um alívio profundo, como se séculos de culpa escorressem de seus ombros.*"
     eldrin "Eu torcia para que esse dia chegasse. Que alguém fosse corajoso o bastante para fazer o que eu não pude."
-    eldrin "Vá, forasteiro. Destrua o artefato. Restaure o equilíbrio. E que a verdade te proteja."
+    eldrin "Vá, forasteiro. Destrua o artefato. Restaure o equilíbrio. E que [senha_porta] te proteja."
     hide eldrin normal with dissolve
     
     show skulla at left with dissolve
@@ -297,7 +297,7 @@ label final_quebrar_selo:
     
     show nekrons at right with dissolve
     nekrons "Os fios do destino se entrelaçam ao redor de sua alma como nunca vi antes."
-    nekrons "Vá com cautela. O artefato sussurrará mentiras. Lembre-se: a verdade não precisa ser lembrada para existir."
+    nekrons "Vá com cautela. O artefato sussurrará mentiras. Lembre-se: [senha_porta] não precisa de memória para existir."
     hide nekrons with dissolve
     
     show aurelium_book at center with dissolve
@@ -308,7 +308,7 @@ label final_quebrar_selo:
     scene black with fade
     "Você cruza o portal. A energia de Aethra te envolve por completo."
     "Diante de você, um mundo esquecido se revela: torres cristalinas rachadas, jardins petrificados, e no centro de tudo, o brilho sinistro do artefato amaldiçoado."
-    "A jornada para restaurar a verdade... acaba de começar."
+    "A jornada para restaurar [senha_porta]... acaba de começar."
     "FIM - O FORASTEIRO ENTROU EM AETHRA"
     $ game_metrics.submit_to_sheets("quebrar_selo")
     $ renpy.full_restart()
@@ -438,7 +438,7 @@ label final_quebrar_selo_epico:
     eldrin "*Os olhos de Eldrin brilham com lágrimas que ele não tenta esconder.*"
     eldrin "Você é tudo que eu esperava e mais. Vá, campeão de Aethra."
     eldrin "Destrua o artefato. Restaure o equilíbrio. E diga a eles..."
-    eldrin "Diga a eles que a verdade nunca morreu. Ela apenas esperou."
+    eldrin "Diga a eles que [senha_porta] nunca morreu. Apenas esperou."
     hide eldrin normal with dissolve
     
     show skulla at left with dissolve
@@ -462,7 +462,7 @@ label final_quebrar_selo_epico:
     "Você cruza o portal empunhando ambas as varinhas. A energia de Aethra te envolve por completo."
     "Diante de você, um mundo esquecido se revela: torres cristalinas rachadas, jardins petrificados, e no centro de tudo, o brilho sinistro do artefato amaldiçoado."
     "Mas desta vez, você não está sozinho. A varinha de Eldrin pulsa em sincronia com seu coração, sussurrando séculos de sabedoria arcana."
-    "A jornada para restaurar a verdade... acaba de começar."
+    "A jornada para restaurar [senha_porta]... acaba de começar."
     "FIM - O CAMPEÃO DE AETHRA"
     $ game_metrics.submit_to_sheets("campeao_de_aethra")
     $ renpy.full_restart()
@@ -565,7 +565,7 @@ label fazer_pocao:
 
 label interagir_mesa_varinha:
     "Sobre a mesa, entre tranqueiras e mapas estelares desbotados, você vê um objeto que chama sua atenção."
-    "Uma {color=#ffd700}Varinha Antiga{/color}, com a ponta de cristal opaca e desativada."
+    "Uma {color=#ffd700}Varinha Antiga{/color}, com a ponta de [ingred_1] opaca e desativada."
     $ has_wand = True
     $ log_event("Player encontrou a Varinha Mágica.")
     "Você obteve a Varinha Arcana! O Botão de Feitiços agora está na interface."
@@ -583,9 +583,9 @@ label interagir_estante_bib:
         jump sala_secreta
     else:
         "Você examina a pesada estante aos fundos. Há raros tomos legíveis que chamam sua atenção:"
-        "Livro de Piromancia: Soldados usavam a fala '{color=#ffd700}Ignis{/color}' para aquecer as brasas à noite."
-        "Diário de Lendas: Um feiticeiro salvou caravanas da sede clamando '{color=#ffd700}Aqua{/color}'."
-        "Fichário Alquímico: Um elixir de Visão pede pó de {color=#ffd700}cristal{/color} puro, {color=#ffd700}folha{/color} prateada e uma sólida {color=#ffd700}raiz{/color} recôndita da escuridão, que devem ser expostos à {color=#ffd700}luz da lua{/color}. O resto arruina a poção."
+        "Livro de Piromancia: Soldados usavam a fala '{color=#ffd700}[spell_fire]{/color}' para aquecer as brasas à noite."
+        "Diário de Lendas: Um feiticeiro salvou caravanas da sede clamando '{color=#ffd700}[spell_water]{/color}'."
+        "Fichário Alquímico: Um elixir de Visão pede pó de {color=#ffd700}[ingred_1]{/color} puro, {color=#ffd700}[ingred_2]{/color} prateada e uma sólida {color=#ffd700}[ingred_3]{/color} recôndita da escuridão, que devem ser expostos à {color=#ffd700}luz da lua{/color}. O resto arruina a poção."
         $ knows_vision_potion = True
         if has_potion:
             "Imediatamente as páginas parecem desinteressantes, pois seus olhos arcanos revelam um forte brilho violáceo por toda a madeira da estante!"
@@ -596,11 +596,11 @@ label interagir_estante_bib:
 label ler_mural_secreta:
     "Você se aproxima do mural grotesco. A caligrafia parece ter sido arranhada na pedra com fúria e desespero."
     "As inscrições na parede têm a cor de sangue seco envelhecido pelo tempo."
-    "A frase '{color=#ffd700}Veritas manet quod oblivio delet{/color}' está gravada em destaque no centro do {color=#ffd700}mural{/color}."
+    "A frase '{color=#ffd700}[senha_latim] manet quod oblivio delet{/color}' está gravada em destaque no centro do {color=#ffd700}mural{/color}."
     "Ao se aproximar, você consegue ler mais escrituras ao redor da frase principal."
     "'Aethra tentou manipular as linhas do tempo apagando a existência de suas falhas, o que corrompeu os alicerces do reino...'"
     "'Para trancar nossos erros na torre, cunhei o selo inviolável. Somente aquele que aceitar nossa sentença terá o caminho livre.'"
-    "'Que o esquecimento jamais vença enquanto houver registros. Lembre-se, viajante de amanhã: a verdade é tudo que nos resta. A verdade restaura a memória.'"
+    "'Que o esquecimento jamais vença enquanto houver registros. Lembre-se, viajante de amanhã: [senha_porta] é tudo que nos resta. [senha_porta!c] restaura a memória.'"
     $ read_mural = True
     $ knows_secret = True
     $ log_event("Player leu o Mural Secreto.")

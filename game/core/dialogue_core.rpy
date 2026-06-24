@@ -10,7 +10,7 @@ init python:
     if not hasattr(store, 'seen_choices_set'):
         store.seen_choices_set = set() # Backward compatibility
 
-    SECRET_PHRASE = "Veritas manet quod oblivio delet"
+    SECRET_PHRASE = "[senha_latim] manet quod oblivio delet"
 
     # Dicionário de estado narrativo global
     story_state = {

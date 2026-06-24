@@ -13,7 +13,7 @@ init python:
         
     def check_potion_ingredients(i1, i2, i3):
         ing_str = (i1 + " " + i2 + " " + i3).lower()
-        return "cristal" in ing_str and "folha" in ing_str and "raiz" in ing_str
+        return store.ingred_1 in ing_str and store.ingred_2 in ing_str and store.ingred_3 in ing_str
 
 label intro_predef:
     scene black
@@ -119,12 +119,12 @@ label handle_wand:
     $ spell = _return.strip().lower() if _return else ""
 
     if not wand_active:
-        if "lumos" in spell:
+        if spell_light in spell:
             with vpunch
             "Ao proferir a palavra, a varinha ressoa com sua intenção. Uma luz prateada percorre o cristal opaco!"
             "A varinha desperta em suas mãos. Agora ela está pronta para canalizar feitiços."
             $ wand_active = True
-            $ log_event("Player reativou a varinha com lumos.")
+            $ log_event("Player reativou a varinha com [spell_light].")
         elif spell != "":
             "A varinha de cristal encontra-se fria e pesada. Você tenta canalizar a magia, mas ela permanece inerte."
             "Você sente que precisa reanimá-la antes de brandir feitiços."
@@ -139,7 +139,7 @@ label handle_wand:
 
 label cast_spell_logic(spell):
     
-    if "ignis" in spell:
+    if spell_fire in spell:
         if current_room == "oficina":
             $ cauldron_fire = True
             "Um fogo caloroso se acende debaixo do caldeirão."
@@ -150,7 +150,7 @@ label cast_spell_logic(spell):
         else:
             "(Melhor não. Soltar fogo aqui poderia danificar algo importante.)"
             
-    elif "aqua" in spell:
+    elif spell_water in spell:
         if current_room == "oficina":
             $ cauldron_water = True
             "Um jato límpido enche o caldeirão."
@@ -161,13 +161,13 @@ label cast_spell_logic(spell):
         else:
             "(Água mágica aqui? Não parece uma boa ideia, posso arruinar algo.)"
             
-    elif "lumos" in spell:
+    elif spell_light in spell:
         if current_room == "oficina" and potion_ready_for_lumos:
             "A ponta da varinha brilha intensamente. Ao tocar a superfície da mistura, a poção reage e assume um brilho azulado, suave como o luar!"
             "Você a engole em um gole só. Seus olhos ardem e se enchem de luz!"
             $ has_potion = True
             $ potion_ready_for_lumos = False
-            $ log_event("Player finalizou e bebeu a Poção de Visão Arcana usando lumos.")
+            $ log_event("Player finalizou e bebeu a Poção de Visão Arcana usando [spell_light].")
             "Você agora tem a {color=#ffd700}Visão Arcana{/color}."
             scene bg oficina_caldeirao_pocao with dissolve
         else:
